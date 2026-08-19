@@ -1,0 +1,82 @@
+{
+  "title": "Fitness Form - ENCORE",
+  "description": "Fitness form to keep all your details in one place.",
+  "pages": [
+    {
+      "name": "page1",
+      "title": "Customer details",
+      "description": "Basic details about the customer",
+      "elements": [
+        {
+          "type": "text",
+          "name": "question1",
+          "title": "First Name"
+        },
+        {
+          "type": "text",
+          "name": "question2",
+          "title": "Last Name"
+        },
+        {
+          "type": "text",
+          "name": "question3",
+          "title": "Mobile Number",
+          "inputType": "tel"
+        },
+        {
+          "type": "boolean",
+          "name": "question4",
+          "title": "Indian"
+        },
+        {
+          "type": "text",
+          "name": "question5",
+          "title": "Age",
+          "inputType": "number"
+        }
+      ]
+    },
+    {
+      "name": "page2",
+      "title": "Physical Measures",
+      "description": "Fitness readings measured and recorded by Fitness trainers.",
+      "elements": [
+        {
+          "type": "text",
+          "name": "question6",
+          "title": "Weight (in Kgs)",
+          "inputType": "number"
+        },
+        {
+          "type": "text",
+          "name": "question7",
+          "title": "Height (in cm)",
+          "inputType": "number"
+        },
+        {
+          "type": "dropdown",
+          "name": "question8",
+          "title": "Sleep",
+          "choices": [
+            {
+              "value": "Item 1",
+              "text": "On time"
+            },
+            {
+              "value": "Item 2",
+              "text": "Always late"
+            },
+            {
+              "value": "Item 3",
+              "text": "Somewhere in middle"
+            },
+            {
+              "value": "Item 4",
+              "text": "Don't want to answer"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

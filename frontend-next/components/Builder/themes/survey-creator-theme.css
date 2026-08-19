@@ -1,0 +1,83 @@
+/* Primary brand color */
+:root {
+  --sjs-layer-1-background-500: #184d50ff;
+  --sjs-layer-1-background-400: rgb(48, 51, 51);
+
+  /* Text color for all visible text on Creator Panel  */
+  --sjs-layer-1-foreground-100: rgb(255, 255, 255);
+  --sjs-layer-1-foreground-50: #ffffff;
+
+  /* Text box color in Sidebar at right */
+  --sjs-layer-3-background-500: #E6EBF9FF;
+  
+  /* Survey & Page - Heading and description text color */
+  --sjs-layer-3-foreground-100: rgb(253, 255, 255);
+  --sjs-layer-3-foreground-50: #ffffff;
+
+  /* Text box color for all text boxes of Questions on creator panel */
+  --sjs-layer-2-background-500: rgb(249, 251, 253);
+  --sjs-layer-2-background-400: #DAE2F7FF;
+
+
+  /* Haze on opening of Sidebar at right: */
+  --sjs-special-haze: #ffffff40;
+  --sjs-border-25: #ffffffff;
+  --sjs-border-10: #ffffffff;
+
+  /* Toolbox icons color and Page Heading and Description box border on select*/
+  --sjs-primary-background-500: rgb(0, 0, 0);
+
+  --sjs-primary-background-10: #ffffff;
+  --sjs-primary-background-400: #ffffffff;
+  --sjs-primary-foreground-100: #FFFFFFFF;
+  --sjs-primary-foreground-25: #f20f0f40;
+
+
+  /* Lower License box */
+  --sjs-secondary-background-500: #000000ff;
+  --sjs-secondary-background-25: #D6378A40;
+  --sjs-secondary-background-10: #D6378A1A;
+  --sjs-secondary-foreground-100: #000000ff;
+
+   
+  --sjs-secondary-background-500: #000000ff;
+  --sjs-secondary-background-25: #D6378A40;
+  --sjs-secondary-background-10: #D6378A1A;
+  --sjs-secondary-foreground-100: #000000ff;
+  --sjs-secondary-forecolor-25: #FFFFFF40;
+  --sjs-semantic-red-background-500: #ffffffff;
+  --sjs-semantic-red-background-10: #D6378A1A;
+  --sjs-semantic-red-foreground-100: #FFFFFFFF;
+  --sjs-semantic-green-background-500: #19B394FF;
+  --sjs-semantic-green-background-10: #19B3941A;
+  --sjs-semantic-green-foreground-100: #FFFFFFFF;
+  --sjs-semantic-blue-background-500: #437FD9FF;
+  --sjs-semantic-blue-background-10: #437FD91A;
+  --sjs-semantic-blue-foreground-100: #FFFFFFFF;
+  --sjs-semantic-yellow-background-500: #FF9814FF;
+  --sjs-semantic-yellow-background-10: #FF98141A;
+  --sjs-semantic-yellow-foreground-100: #FFFFFFFF;
+  --sjs-semantic-white-background-500: #FFFFFFFF;
+  --sjs-code-gray-700: #B6B6B6FF;
+  --sjs-code-blue-500: #326FCAFF;
+  --sjs-code-gray-300: #505050FF;
+  --sjs-code-green-500: #08997CFF;
+  --sjs-code-red-500: #ffffffff;
+  --sjs-code-purple-500: #ffffffff;
+  --sjs-code-yellow-500: #F58D06FF;
+  --sjs-code-gray-500: #8A8A8AFF;
+
+  /* Background of pick and crop center creator panel */
+  --sjs-special-background: rgb(51, 138, 142);
+  
+  --sjs-layer-1-foreground-75: #ffffffde;
+  --sjs-layer-3-background-400: #D3DDF5FF;
+  --sjs-special-glow: #27385933;
+  --sjs-special-shadow: #27385940;
+  --sjs-layer-3-foreground-75: #000000ff;
+  --sjs-layer-2-foreground-100: #273859FF;
+  --sjs-layer-2-foreground-75: #ffffffff;
+  --sjs-layer-2-foreground-50: #26335880;
+  --sjs-border-25-overlay: #00000026;
+  --sjs-secondary-background-400: #C62076F;
+}

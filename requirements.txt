@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────
+# VoxForm AI App – Python dependencies
+# ─────────────────────────────────────────────
+
+# --- Backend Frameworks/Libs ------
+fastapi==0.141.1
+uvicorn[standard]==0.32.1
+
+# --- MySQL Libs -------------------
+sqlalchemy==2.0.36
+pymysql==1.1.1
+
+# --- Groq API SDK -----------------
+groq==1.6.0
+
+# --- Data Validation Libs ---------
+pydantic==2.10.3
+pydantic-settings==2.6.1
+cryptography==43.0.3
+jinja2==3.1.4
+python-multipart==0.0.18
+bcrypt==4.2.1
+pyjwt==2.10.1
+email-validator==2.2.0
+
+# --- dev / test -------------------
+pytest==8.3.4
+httpx==0.28.1
