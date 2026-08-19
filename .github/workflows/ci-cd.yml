@@ -47,11 +47,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get GitHub OIDC token
+        id: oidc
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const token = await core.getIDToken('sts.amazonaws.com');
+            const payload = JSON.parse(
+              Buffer.from(token.split('.')[1], 'base64url').toString()
+            );
+
+            console.log("OIDC subject:", payload.sub);
+            console.log("OIDC audience:", payload.aud);
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: arn:aws:iam::131708657836:role/GitHubVoxFormECRRole
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
