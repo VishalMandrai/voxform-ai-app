@@ -9,7 +9,7 @@ import { IoBarChartOutline } from "react-icons/io5";
 import { MdInsertInvitation } from "react-icons/md";
 
 
-import ActionCard from "./ActionCard";
+import ActionCard from "@/components/ActionCard";
 
 export default function ActionGrid({ isAdmin }) {
 

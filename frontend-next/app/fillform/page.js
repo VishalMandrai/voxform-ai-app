@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Survey } from "survey-react-ui";
 import { Model } from "survey-core";
 import "survey-core/survey-core.css";
-import voxformTheme from "@/components/builder/themes/survey_theme_fill";
+import voxformTheme from "@/components/Builder/themes/survey_theme_fill";
 
 import FormTitle from "@/components/Forms/FormTitle";
 import FormToolbar from "@/components/Forms/FormToolbar";

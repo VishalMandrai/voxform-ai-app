@@ -1,7 +1,7 @@
 'use client'
 
-import HeroContent from "./HeroContent";
-import LoginCard from "./LoginCard";
+import HeroContent from "@/components/HeroContent";
+import LoginCard from "@/components/LoginCard";
 
 /*
 |--------------------------------------------------------------------------

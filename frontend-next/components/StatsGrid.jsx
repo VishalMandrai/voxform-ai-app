@@ -1,8 +1,6 @@
 'use client'
 
 // Status Grid Card:
-
-
 export default function StatsGrid(props) {
   const stats = [
     ["Forms", props.total_forms],

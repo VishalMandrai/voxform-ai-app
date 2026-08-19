@@ -5,8 +5,8 @@
 */
 
 import Link from 'next/link'
-import Metadata from './Metadata'
-import SocialIcon from './social-icons'
+import Metadata from '@/components/Metadata'
+import SocialIcon from '@/components/social-icons'
 
 export default function Footer() {
   return (

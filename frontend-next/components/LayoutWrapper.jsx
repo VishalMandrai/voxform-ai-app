@@ -8,10 +8,10 @@ import Image from 'next/image';
 
 import { IoLogOutOutline } from "react-icons/io5";
 
-import HeaderNavLinks from './HeaderNavLinks'
+import HeaderNavLinks from '@/components/HeaderNavLinks'
 import Logo from '@/public/voxform-logo.svg'
-import SectionContainer from './SectionContainer'
-import Footer from './Footer'
+import SectionContainer from '@/components/SectionContainer'
+import Footer from '@/components/Footer'
 
 import { logout } from '@/api/auth';
 

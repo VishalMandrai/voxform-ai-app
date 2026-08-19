@@ -10,10 +10,10 @@ export default function TrustStrip() {
 
   const items = [
     "Voice Recognition", "|",
-    "LLM Inference", "|",
-    "MySQL DB", "|",
-    "FastAPI-React", "|",
-    "Secure Authentication"
+    "GPT Inference", "|",
+    "MySQL", "|",
+    "FastAPI-Next.JS", "|",
+    "JWT User Authentication"
   ];
 
   return (
