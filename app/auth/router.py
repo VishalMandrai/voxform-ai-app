@@ -163,7 +163,7 @@ def get_me(current_user: UserRead = Depends(get_current_user),
 
 @router.get("/api/auth/users", response_model=list[UserFullDetails], tags=["auth"])
 def list_org_users(
-    current_user: UserRead = Depends(require_role(Role.ORG_ADMIN)),
+    current_user: UserRead = Depends(get_current_user),
     auth_service: AuthService = Depends(get_auth_service),
 ) -> list[UserFullDetails]:
     

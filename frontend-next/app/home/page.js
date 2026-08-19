@@ -137,12 +137,12 @@ export default function Home() {
         <WelcomeCard user={currentUser} />
 
         {/* 2. Stats Grid */}
-        {isAdmin && <StatsGrid 
-                          total_forms = {userStats.total_forms}
-                          total_responses = {userStats.total_responses}
-                          total_members = {members.length}
-                          total_invites = {invites.total_invites}
-                          />}
+        <StatsGrid 
+              total_forms = {userStats.total_forms}
+              total_responses = {userStats.total_responses}
+              total_members = {members.length}
+              total_invites = {invites.total_invites}
+              />
 
         {/* 3. Action Cards */}
         <ActionGrid isAdmin={isAdmin} />
@@ -155,9 +155,7 @@ export default function Home() {
                     />
           </div>
 
-          {isAdmin && (
-            <MembersCard members = {members}/>
-          )}
+          <MembersCard members = {members}/>
 
         </div>
       </main>

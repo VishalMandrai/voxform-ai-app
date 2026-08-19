@@ -18,7 +18,7 @@ from app.analytics.csv_export import render_responses_csv
 from app.analytics.repository import AnalyticsRepository, MySQLAnalyticsRepository
 from app.analytics.schemas import FormDashboard, OrgOverview, AllResponsesForExp
 from app.analytics.service import AnalyticsService
-from app.auth.dependencies import require_role
+from app.auth.dependencies import require_role, get_current_user
 from app.auth.schemas import UserRead
 from app.auth.models import Role, User
 from app.core.db import get_db
@@ -45,7 +45,7 @@ def get_analytics_service(
 
 @router.get("/api/analytics/overview", response_model=OrgOverview, tags=["analytics"])
 def get_org_overview(
-    current_user: UserRead = Depends(require_role(Role.ORG_ADMIN)),
+    current_user: UserRead = Depends(get_current_user),
     service: AnalyticsService = Depends(get_analytics_service),
 ) -> OrgOverview:
     return service.get_org_overview(current_user.org_id)

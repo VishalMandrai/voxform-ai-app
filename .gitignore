@@ -103,3 +103,5 @@ uploaded_audio
 Makefile
 tox.ini
 setup.py
+
+.github

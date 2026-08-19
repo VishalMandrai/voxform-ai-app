@@ -13,10 +13,15 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env.production", 
+                                      env_file_encoding="utf-8", 
+                                      extra="ignore",
+                                      )
 
     # --- Database ----------------------------------------------------- 
     database_url: str = "mysql+pymysql://voiceform:voiceform@localhost:3306/voiceform"
+                       # "MySQL as the database system" + "pure-Python PyMySQL connector library" ://
+                       # "Username" : "Password" @ "Host" : "Port" / "Database Name"
 
     # --- Voice / Whisper ----------------------------------------------
     whisper_model_size: str = "small"          # tiny | base | small | medium | large-v3
