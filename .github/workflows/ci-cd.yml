@@ -1,0 +1,109 @@
+name: CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: voxform
+
+jobs:
+  # test:
+  #   name: Run tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.12'
+
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirements.txt
+
+  #     - name: Run pytest
+  #       run: pytest -q
+
+  # -------------------------------------------------------------------------------
+
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push VoxForm image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/voxform:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/voxform:latest
+
+  # -------------------------------------------------------------------------------
+  
+  # deploy-to-vm:
+  #   name: Deploy changes to Azure VM
+  #   needs: build-and-push
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Run deployment commands on Azure VM
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.BOOKHEAD_VM_HOST }}
+  #         username: ${{ secrets.BOOKHEAD_VM_USER }}
+  #         key: ${{ secrets.BOOKHEAD_VM_SSH_PRIVATE_KEY }}
+  #         port: ${{ secrets.BOOKHEAD_VM_SSH_PORT || '22' }}
+  #         script: |
+  #           cd /home/${{ secrets.BOOKHEAD_VM_USER }}/bookhead
+  #           echo "${{ secrets.BOOKHEAD_ACR_PASSWORD }}" | sudo docker login ${{ secrets.BOOKHEAD_ACR_LOGIN_SERVER }} --username ${{ secrets.BOOKHEAD_ACR_USERNAME }} --password-stdin
+
+  #           echo "IMAGE_TAG=${{ github.sha }}" > .image_tag.env
+
+  #           docker compose --env-file .image_tag.env pull
+  #           docker compose --env-file .image_tag.env up -d --remove-orphans
+  #           docker image prune -af
+
+
+# -------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
+
+# Required GitHub secrets & variables:
+# AWS_REGION
+# ECR_REPOSITORY - voxform
+# AWS_ROLE_ARN - GitHub OIDC enabled Role for ECR Push
+
+# Notes:
+# - This workflow runs on merge / push to main and later on will validate the tests first.
+# - The build and pushes Docker image to AWS Elastic Container Registry.
+# - The VM deploy job runs to restart new docker image from ECR.
