@@ -43,7 +43,7 @@ COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend source
-COPY app/ ./backend/
+COPY app/ ./app/
 
 # Copy the static Next.js output from Stage 1
 COPY --from=frontend-builder /app/frontend/out ./frontend/out/
@@ -52,7 +52,7 @@ COPY --from=frontend-builder /app/frontend/out ./frontend/out/
 EXPOSE 8000
 
 # Start FastAPI
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 
 # ============================================================

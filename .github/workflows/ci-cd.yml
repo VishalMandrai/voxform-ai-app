@@ -64,8 +64,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/voxform:${{ github.sha }}
-            ${{ steps.login-ecr.outputs.registry }}/voxform:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
 
   # -------------------------------------------------------------------------------
   
