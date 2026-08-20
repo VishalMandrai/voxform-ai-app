@@ -58,7 +58,7 @@ export default function SignUpCard() {
       // Axios throws automatically for 4xx/5xx errors
       const response = await signup(fullName, org, email, password);
 
-      setMessage(`${response.full_name} - Sign Up successful! Now Log In.`)
+      setMessage(`${fullName} - Sign Up successful! Now Log In.`)
 
       // Login successful.
       // Cookie has already been stored by the browser.

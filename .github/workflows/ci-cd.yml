@@ -37,11 +37,12 @@ jobs:
   #     - name: Run pytest
   #       run: pytest -q
 
-  # -------------------------------------------------------------------------------
+  # ==================================================
+  # JOB 1 — Build & Push App's DOcker Image
+  # ==================================================
 
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
 
       - name: Checkout repository
@@ -67,39 +68,82 @@ jobs:
             ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
             ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
 
-  # -------------------------------------------------------------------------------
-  
-  # deploy-to-vm:
-  #   name: Deploy changes to Azure VM
-  #   needs: build-and-push
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
 
-  #     - name: Run deployment commands on Azure VM
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.BOOKHEAD_VM_HOST }}
-  #         username: ${{ secrets.BOOKHEAD_VM_USER }}
-  #         key: ${{ secrets.BOOKHEAD_VM_SSH_PRIVATE_KEY }}
-  #         port: ${{ secrets.BOOKHEAD_VM_SSH_PORT || '22' }}
-  #         script: |
-  #           cd /home/${{ secrets.BOOKHEAD_VM_USER }}/bookhead
-  #           echo "${{ secrets.BOOKHEAD_ACR_PASSWORD }}" | sudo docker login ${{ secrets.BOOKHEAD_ACR_LOGIN_SERVER }} --username ${{ secrets.BOOKHEAD_ACR_USERNAME }} --password-stdin
+  # ==================================================
+  # JOB 2 — Deploy to EC2
+  # ==================================================
 
-  #           echo "IMAGE_TAG=${{ github.sha }}" > .image_tag.env
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
 
-  #           docker compose --env-file .image_tag.env pull
-  #           docker compose --env-file .image_tag.env up -d --remove-orphans
-  #           docker image prune -af
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
 
+          script: |
+
+            set -e
+
+            echo "======================================"
+            echo "Starting VoxForm deployment"
+            echo "======================================"
+
+            AWS_REGION="ap-south-1"
+            ECR_REGISTRY="131708657836.dkr.ecr.ap-south-1.amazonaws.com"
+            ECR_REPOSITORY="voxform"
+            IMAGE_TAG="${{ github.sha }}"
+
+            echo "Logging into ECR..."
+
+            aws ecr get-login-password \
+              --region $AWS_REGION \
+              | docker login \
+                  --username AWS \
+                  --password-stdin \
+                  $ECR_REGISTRY
+
+            echo "Pulling image..."
+
+            docker pull \
+              $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+            echo "Stopping existing container..."
+
+            docker stop voxform || true
+
+            echo "Removing existing container..."
+
+            docker rm voxform || true
+
+            echo "Starting new container..."
+
+            docker run -d \
+              --name voxform \
+              --restart always \
+              --env-file /home/ubuntu/voxform/.env.production \
+              -p 8000:8000 \
+              $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+            echo "Cleaning unused images..."
+
+            docker image prune -af
+
+            echo "======================================"
+            echo "Deployment completed"
+            echo "======================================"
+
+            docker ps
 
 # -------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------
 
 # Required GitHub secrets & variables:
-# AWS_REGION
+# AWS_REGION - ap-south-1
 # ECR_REPOSITORY - voxform
 # AWS_ROLE_ARN - GitHub OIDC enabled Role for ECR Push
 

@@ -117,10 +117,6 @@ app.frontend(
 def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
-print("-----------------------------------------------")
-print(settings.whisper_api_key , settings.LLM_api_key)
-print("-----------------------------------------------")
-
 # ─────────────────────────────────────────────────────────────────
 # App level Error Handlers
 # ─────────────────────────────────────────────────────────────────
