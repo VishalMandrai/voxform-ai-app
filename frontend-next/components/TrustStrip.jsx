@@ -13,7 +13,7 @@ export default function TrustStrip() {
     "GPT Inference", "|",
     "MySQL", "|",
     "FastAPI-Next.JS", "|",
-    "JWT User Authentication"
+    "JWT User Auth"
   ];
 
   return (

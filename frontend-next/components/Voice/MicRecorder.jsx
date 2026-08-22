@@ -9,6 +9,7 @@ export default function MicRecorder({
     onRecordingStop,
     disabled = false }) {
     const [isRecording, setIsRecording] = useState(false);
+    const isRecordingRef = useRef(false);
 
     const mediaRecorderRef = useRef(null);
     const streamRef = useRef(null);
@@ -44,7 +45,7 @@ export default function MicRecorder({
 
 
     const startRecording = async () => {
-        if (disabled || isRecording) return;
+        if (disabled || isRecordingRef.current) return;
 
         try {
             const stream =  await getMicrophoneStream();
@@ -87,8 +88,11 @@ export default function MicRecorder({
                 // console.log("Mic Stopped.....")
             };
 
+            isRecordingRef.current = true;
+            setIsRecording(true);
+
             recorder.start();
-            startedAtRef.current = Date.now();                  // recording start time
+            startedAtRef.current = Date.now();        // recording start time
 
             // Recording Timer settings:
             setElapsed(0);
@@ -101,19 +105,20 @@ export default function MicRecorder({
 
             // console.log(`Mic Recording.....`)
 
-            setIsRecording(true);
         } catch (err) {
             console.error("Microphone access denied:", err);
         }
     };
 
     const stopRecording = () => {
+        if (!isRecordingRef.current) return;
+
+        isRecordingRef.current = false;
+        setIsRecording(false);
+
         // Recording Timer:
         clearInterval(intervalRef.current);
         intervalRef.current = null;
-
-        if (!isRecording) return;
-        setIsRecording(false);
 
         if (
             mediaRecorderRef.current &&
@@ -121,6 +126,36 @@ export default function MicRecorder({
         ) {
             mediaRecorderRef.current.stop();
         }
+    };
+
+    // -------- Pointer Handlers -------------------------------------------------
+    const handlePointerDown = async (e) => {
+        if (disabled || isRecordingRef.current) return;
+
+        e.preventDefault();
+        e.currentTarget.setPointerCapture(e.pointerId);
+
+        await startRecording();
+    };
+
+    const handlePointerUp = (e) => {
+        e.preventDefault();
+
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+        }
+
+        stopRecording();
+    };
+
+    const handlePointerCancel = (e) => {
+        e.preventDefault();
+
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+        }
+
+        stopRecording();
     };
 
     /**
@@ -145,25 +180,15 @@ export default function MicRecorder({
             <button
                 type="button"
                 disabled={disabled}
-                onMouseDown={startRecording}
-                onMouseUp={stopRecording}
-                onMouseLeave={() => {
-                    if (isRecording) stopRecording();
-                }}
-                onTouchStart={(e) => {
-                    e.preventDefault();
-                    startRecording();
-                }}
-                onTouchEnd={(e) => {
-                    e.preventDefault();
-                    stopRecording();
-                }}
-                onTouchCancel={stopRecording}
+                onPointerDown={handlePointerDown}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerCancel}
                 className={`
                     w-25 h-20 z-10 rounded-full mb-2
                     flex items-center justify-center
                     transition-all duration-200
                     select-none
+                    touch-none
 
                     ${
                         isRecording
