@@ -180,15 +180,27 @@ export default function MicRecorder({
             <button
                 type="button"
                 disabled={disabled}
+
                 onPointerDown={handlePointerDown}
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerCancel}
+
+                onContextMenu={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}
+
                 className={`
                     w-25 h-20 z-10 rounded-full mb-2
                     flex items-center justify-center
                     transition-all duration-200
                     select-none
                     touch-none
+                    cursor-pointer
+
+                    [-webkit-user-select:none]
+                    [-webkit-touch-callout:none]
+                    [-webkit-tap-highlight-color:transparent]
 
                     ${
                         isRecording
@@ -200,8 +212,21 @@ export default function MicRecorder({
                     disabled:cursor-not-allowed
                 `}
             >
-                <Mic className={`w-12 h-12 text-white transition-transform duration-900 
-                                ${isRecording ? 'rotate-360' : 'rotate-0'}`} />
+                <Mic 
+                    draggable={false}
+                    onContextMenu={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
+                    className={`
+                        w-12 h-12
+                        text-white
+                        pointer-events-none
+                        transition-transform duration-900
+                        ${isRecording ? "rotate-360" : "rotate-0"}
+                    `}
+                />
+
             </button>
             <span
                 className="
