@@ -1,53 +1,49 @@
+🎙️ VoxForm AI
+==============================
 
-Project Organization
+An AI based form filling application that uses voice based input to fill forms. It uses OpenAI Whisper and GPT to provide a quick and easy form filling interface. It provides an easy to navigate, pick-and-drop form builder interface powered by SurveyJS. Features a form management panel and provides a JWT-secured access with hierarchial role based access to teams and members.
+
+#### Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
-
+    ├── README.md               <- The top-level README for developers using this project.
+    ├── app                     <- Backend source code
+    │   ├─── main.py               - starting FastAPI service and app startup and config
+    │   ├─── analytics             - Segregated based on services
+    │   ├─── auth                  - Each service have their own separate router code
+    │   ├─── core                  - Each service has its own response models, respository code
+    │   ├─── forms                 - and related ORM models
+    │   ├─── form_templates
+    │   ├─── responses
+    │   └─── voice
+    |
+    ├── frontend-next           <- Next.JS frontend directory
+    │   ├─── api                   - all service wise API code and axios config code
+    │   ├─── app                   - all app pages and layout code
+    │   ├─── components            - all react components code used across pages
+    │   ├─── public                - contains app logo
+    │   ├─── .gitignore
+    │   ├─── eslint.config.mjs     - To run frontend Next.JS app directly run:
+    │   ├─── jsconfig.json              1. `npm install` - to get all necessary packages
+    │   ├─── next.config.mjs            2. `npm run dev` - to start local dev server; hosting frontend app
+    │   ├─── package-lock.json     - NOTE: start a backend FastAPI service separately for support.
+    │   ├─── package.json
+    │   └─── postcss.config.mjs
+    |
+    ├── frontend                <- Next.JS exported static frontend files
+    │   └── out                    - All static files - HTML-JS
+    |                              - exported using `npm run build` command 
+    |
+    ├── scripts                 <- python script to create user using terminal
+    │   └── seed_org.py            - not useful; public sign-up available
+    |
+    ├── tests                   <- All test files
+    |
+    ├── .env.example            <- File to load app environment variables on docker run
+    ├── requirements.txt        <- Requirements file for reproducing environment; for Docker use
+    ├── .gitattributes
+    └── .gitignore
+   
 
 --------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
