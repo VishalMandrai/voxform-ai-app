@@ -3,7 +3,7 @@
 ![alt text](image.png)
 
 <p align="center">
-  <font size="5"><b><i>VoxForm AI - Fill Forms at the Speed of Speech</i></b></font>
+  <font size="6"><b><i>VoxForm AI - Fill Forms at the Speed of Speech</i></b></font>
 </p>
 
 
@@ -38,37 +38,22 @@ It also provides a powerful **drag-and-drop form builder**, form management, tea
 
 VoxForm follows a simple **Voice → Transcribe → Extract → Fill** pipeline:
 
-<!-- ```text
-🎤 User speaks
-      ↓
-🌐 Browser MediaRecorder
-      ↓
-⚡ FastAPI Backend
-      ↓
-🔊 Whisper Speech-to-Text
-      ↓
-🧠 LLM Field Extraction
-      ↓
-📦 Structured JSON
-      ↓
-✍️ React / SurveyJS Form
-      ↓
-✅ User Review & Submit
-``` -->
-
-```mermaid
-flowchart TB
-
-    U[🎤 User speaks]
-    MR[🌐 Browser MediaRecorder]
-    API[⚡ FastAPI Backend]
-    WST[🔊 Whisper Speech-to-Text]
-    LLMFE[🧠 LLM Field Extraction]
-    SJSON[📦 Structured JSON]
-    JSFORM[✍️ React / SurveyJS Form]
-    SUBMIT[✅ User Review & Submit]
-
-    U --> MR --> API --> WST --> LLMFE --> SJSON --> JSFORM --> SUBMIT 
+```text
+            🎤 User speaks
+                  ↓
+        🌐 Browser MediaRecorder
+                  ↓
+          ⚡ FastAPI Backend
+                  ↓
+      🔊 Whisper Speech-to-Text
+                  ↓
+        🧠 LLM Field Extraction
+                  ↓
+          📦 Structured JSON
+                  ↓
+        ✍️ React / SurveyJS Form
+                  ↓
+        ✅ User Review & Submit
 ```
 
 ### 1. 🎤 Speak Naturally
