@@ -14,14 +14,18 @@ import { getFormbyID } from "@/api/forms";
 import { SaveForm } from "@/api/forms";
 import { DeleteForm } from "@/api/forms";
 
-import dynamic from "next/dynamic";
+import SurveyResponseExporter from "@/components/Forms/SurveyResponseExporter";
 
-const SurveyCSVExport = dynamic(
-    () => import("@/components/Forms/SurveyCSVExport"),
-    {
-        ssr: false,
-    }
-);
+
+// -------- FOR SurveyJS Powered Response Transformation ---------------------
+// import dynamic from "next/dynamic";
+
+// const SurveyCSVExport = dynamic(
+//     () => import("@/components/Forms/SurveyCSVExport"),
+//     {
+//         ssr: false,
+//     }
+// );
 
 // form contains -> id, title, description, schema_json, total_questions and created_at.
 
@@ -171,7 +175,7 @@ export default function FormCard({ form, index, refreshForms}) {
                     </button>
 
                     <div>
-                        { total_responses >= 1 ? <SurveyCSVExport form={form}/> : ""}
+                        { total_responses >= 1 ? <SurveyResponseExporter form={form}/> : ""}
                     </div>
 
                 </div>
