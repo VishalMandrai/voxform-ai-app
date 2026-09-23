@@ -171,7 +171,7 @@ export default function FormCard({ form, index, refreshForms}) {
                     </button>
 
                     <div>
-                        { total_responses >= 5 ? <SurveyCSVExport form={form}/> : ""}
+                        { total_responses >= 1 ? <SurveyCSVExport form={form}/> : ""}
                     </div>
 
                 </div>
