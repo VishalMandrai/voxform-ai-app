@@ -19,7 +19,7 @@ from app.forms.schemas import FormCreate
 class FormService:
     def __init__(self, 
                  repository: FormRepository,
-                 form_repository: ResponseRepository) -> None:
+                 form_repository: ResponseRepository = None) -> None:
         self._repository = repository
         self._form_repository = form_repository
 
