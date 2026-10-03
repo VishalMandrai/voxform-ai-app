@@ -123,14 +123,20 @@ class ResponseService:
         # ---------------------------------------------------------
         # 2. Transform the submitted response
         # ---------------------------------------------------------
-        transformed_response = {}
+        transformed_response: list = []
 
         for question_name, response_value in response_body.items():
 
             # If response contains a field that is not present
             # in the schema, preserve it as-is.
             if question_name not in question_map:
-                transformed_response[question_name] = response_value
+                ## Create a small dictionary for the transformed response
+                ## & then append it to the list of transformed responses
+                ## This is done to keep the question order intact
+                transformed_response_dict = {}
+                transformed_response_dict[question_name] = response_value
+                
+                transformed_response.append(transformed_response_dict)
                 continue
 
             question = question_map[question_name]
@@ -208,7 +214,13 @@ class ResponseService:
             # -----------------------------------------------------
             # 6. Use question title as the new key
             # -----------------------------------------------------
-            transformed_response[question_title] = converted_value
+            ## Create a small dictionary for the transformed response
+            ## & then append it to the list of transformed responses
+            ## This is done to keep the question order intact
+            transformed_response_dict = {}
+            transformed_response_dict[question_name] = response_value
+            
+            transformed_response.append(transformed_response_dict)
 
         return transformed_response
 

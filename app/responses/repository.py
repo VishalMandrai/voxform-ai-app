@@ -35,6 +35,23 @@ class MySQLResponseRepository(ResponseRepository):
         self._db.commit()
         self._db.refresh(response)
         return response
+    
+    def delete(self, ) -> Response:
+        form = self._db.query(Form).filter(Form.id == form_id, Form.org_id == org_id).first()
+        if form is None:
+            return False
+        self._db.delete(form)
+        self._db.commit()
+        return True
+    
+    def delete(self, form_id: str, org_id: str) -> bool:
+        responses = self._db.query(Response).filter(Response.form_id == form_id, 
+                                                    Response.org_id == org_id).first()
+        if responses is None:
+            return
+        self._db.delete(responses)
+        self._db.commit()
+        return
 
     def get_by_id(self, response_id: str, org_id: str) -> Response | None:
         return (

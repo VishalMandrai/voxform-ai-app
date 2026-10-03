@@ -23,6 +23,7 @@ from app.auth.schemas import UserRead
 from app.core.db import get_db
 from app.core.exceptions import NotFoundError, ValidationError
 from app.forms.repository import FormRepository, MySQLFormRepository
+from app.responses.repository import ResponseRepository, MySQLResponseRepository
 from app.forms.schemas import FormCreate, FormRead, FormSummary
 from app.forms.service import FormService
 
@@ -34,9 +35,15 @@ def get_form_repository(db: Session = Depends(get_db)) -> FormRepository:
     """The only line in the app that names a concrete repository class."""
     return MySQLFormRepository(db)
 
+def get_response_repository(db: Session = Depends(get_db)) -> FormRepository:
+    """The only line in the app that names a concrete repository class."""
+    return MySQLResponseRepository(db)
 
-def get_form_service(repository: FormRepository = Depends(get_form_repository)) -> FormService:
-    return FormService(repository)
+
+def get_form_service(repository: FormRepository = Depends(get_form_repository),
+                     form_repository: ResponseRepository = Depends(get_response_repository)
+                     ) -> FormService:
+    return FormService(repository, form_repository)
 
 
 # ---------------------------------------------------------------------------

@@ -12,12 +12,16 @@ repository contract, same as it always has.
 from app.core.exceptions import NotFoundError
 from app.forms.models import Field, Form
 from app.forms.repository import FormRepository
+from app.responses.repository import ResponseRepository
 from app.forms.schemas import FormCreate
 
 
 class FormService:
-    def __init__(self, repository: FormRepository) -> None:
+    def __init__(self, 
+                 repository: FormRepository,
+                 form_repository: ResponseRepository) -> None:
         self._repository = repository
+        self._form_repository = form_repository
 
     def create_form(self, org_id: str, payload: FormCreate) -> Form:
         # Calculating total questions in the survey form
@@ -31,17 +35,7 @@ class FormService:
                     schema_json=payload.pages,
                     total_questions=tot_ques,
                     )
-        # We don't need it 
-        # for position, field_data in enumerate(payload.fields):
-        #     form.fields.append(
-        #         Field(
-        #             label=field_data.label,
-        #             field_type=field_data.field_type,
-        #             is_required=field_data.is_required,
-        #             options_csv=",".join(field_data.options) if field_data.options else None,
-        #             position=position,
-        #         )
-        #     )
+        
         return self._repository.create(form)
 
 
@@ -57,5 +51,8 @@ class FormService:
 
 
     def delete_form(self, form_id: str, org_id: str) -> None:
+        ## First delete the responses and then the Form definition
+        self._form_repository.delete(form_id, org_id)
+        
         if not self._repository.delete(form_id, org_id):
             raise NotFoundError(f"Form '{form_id}' not found")
