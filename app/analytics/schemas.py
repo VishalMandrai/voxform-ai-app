@@ -32,7 +32,7 @@ class OrgOverview(BaseModel):
 class AllResponsesForExp(BaseModel):
     form_id: str
     org_id: str
-    answers: list[dict]
+    answers: list
     
 
 class DayCount(BaseModel):

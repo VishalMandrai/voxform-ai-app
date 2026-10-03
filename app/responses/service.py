@@ -218,7 +218,7 @@ class ResponseService:
             ## & then append it to the list of transformed responses
             ## This is done to keep the question order intact
             transformed_response_dict = {}
-            transformed_response_dict[question_name] = response_value
+            transformed_response_dict[question_title] = converted_value
             
             transformed_response.append(transformed_response_dict)
 

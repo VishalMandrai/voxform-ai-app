@@ -88,7 +88,7 @@ export default function SurveyResponseExporter({ form }) {
         try {
 
             // --------------------------------------------------
-            // 1. Get all normalized responses
+            // 1. Get all responses
             // --------------------------------------------------
 
             const responseResult = await getResponses(form.id);
@@ -114,30 +114,91 @@ export default function SurveyResponseExporter({ form }) {
 
 
             // --------------------------------------------------
-            // 3. Get all CSV columns
+            // 3. Validate and normalize responses
             // --------------------------------------------------
             //
-            // Since the responses are already normalized, the
-            // response keys themselves are now the column names.
+            // Input:
+            //
+            // [
+            //     [
+            //         {"question1": "Aditya"},
+            //         {"question2": "Rana"},
+            //         {"question4": "1999-12-03"},
+            //         {"question3": "Item 1"}
+            //     ],
+            //     [
+            //         {"question1": "Aditya"},
+            //         {"question2": "Rana"},
+            //         {"question4": "1999-12-03"},
+            //         {"question3": "Item 1"}
+            //     ]
+            // ]
+            //
+            // Each inner list becomes one response object.
+            //
+            // --------------------------------------------------
+
+            const normalizedResponses = responses.map((responseList) => {
+
+                if (!Array.isArray(responseList)) {
+                    throw new Error(
+                        "Invalid response format: each response must be an array."
+                    );
+                }
+
+                return responseList.reduce(
+                    (responseObject, answer) => {
+
+                        if (
+                            answer &&
+                            typeof answer === "object" &&
+                            !Array.isArray(answer)
+                        ) {
+                            Object.assign(responseObject, answer);
+                        }
+
+                        return responseObject;
+
+                    },
+                    {}
+                );
+
+            });
+
+
+            // --------------------------------------------------
+            // 4. Get CSV columns
+            // --------------------------------------------------
+            //
+            // IMPORTANT:
+            //
+            // The order of columns follows the order in which
+            // keys appear in the original response lists.
+            //
+            // The first occurrence of a key determines its
+            // column position.
             //
             // Example:
             //
-            // {
-            //     "First Name": "Vishal",
-            //     "Last Name": "Mandrai",
-            //     "Gender": "Male"
-            // }
+            // [
+            //     {"question1": "Aditya"},
+            //     {"question2": "Rana"},
+            //     {"question4": "1999-12-03"},
+            //     {"question3": "Item 1"}
+            // ]
             //
-            // becomes:
+            // produces:
             //
-            // First Name,Last Name,Gender
+            // question1, question2, question4, question3
             //
             // --------------------------------------------------
 
             const columns = [
                 ...new Set(
-                    responses.flatMap((response) =>
-                        Object.keys(response)
+                    responses.flatMap((responseList) =>
+                        responseList.flatMap((answer) =>
+                            Object.keys(answer)
+                        )
                     )
                 ),
             ];
@@ -151,7 +212,7 @@ export default function SurveyResponseExporter({ form }) {
 
 
             // --------------------------------------------------
-            // 4. Create CSV header
+            // 5. Create CSV header
             // --------------------------------------------------
 
             const header = columns
@@ -160,10 +221,10 @@ export default function SurveyResponseExporter({ form }) {
 
 
             // --------------------------------------------------
-            // 5. Create CSV rows
+            // 6. Create CSV rows
             // --------------------------------------------------
 
-            const rows = responses.map((response) => {
+            const rows = normalizedResponses.map((response) => {
 
                 return columns
                     .map((column) => {
@@ -175,7 +236,7 @@ export default function SurveyResponseExporter({ form }) {
 
 
             // --------------------------------------------------
-            // 6. Create final CSV
+            // 7. Create final CSV
             // --------------------------------------------------
 
             const csv = [
@@ -185,14 +246,14 @@ export default function SurveyResponseExporter({ form }) {
 
 
             // --------------------------------------------------
-            // 7. Add UTF-8 BOM for Excel
+            // 8. Add UTF-8 BOM for Excel
             // --------------------------------------------------
 
             const csvWithBom = "\uFEFF" + csv;
 
 
             // --------------------------------------------------
-            // 8. Download CSV
+            // 9. Download CSV
             // --------------------------------------------------
 
             downloadCSV(
